@@ -1,0 +1,8 @@
+.hidden {
+    visibility: hidden;
+}
+
+.nothidden {
+    visibility: visible;
+    color: red;
+}
