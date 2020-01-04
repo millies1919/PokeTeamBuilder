@@ -19,7 +19,7 @@ const SearchBar = () => {
   };
   return (
     <div>
-      <h3>Lets Start A Team!</h3>
+      <h3>Search for a Pokemon</h3>
       <form onSubmit={searchSubmit}>
         <input
           id="inputpokemon"

@@ -1,54 +1,59 @@
 import React, { useState } from 'react';
 import './PokeCard.css';
+import { natureArr, evArr, moveArr, pokemon } from '../../data/data';
 
-var evObj = [
-  { id: 'hpev', text: 'HP:' },
-  { id: 'atkev', text: 'ATK:' },
-  { id: 'spaev', text: 'SPA:' },
-  { id: 'defev', text: 'DEF:' },
-  { id: 'spdev', text: 'SPD:' },
-  { id: 'speev', text: 'SPE:' }
-];
+var data = [];
+var pokemonTeam = [];
 
-var moveObj = [
-  { id: 'move1', text: 'Move 1:' },
-  { id: 'move2', text: 'Move 2:' },
-  { id: 'move3', text: 'Move 3:' },
-  { id: 'move4', text: 'Move 4:' }
-];
+const sumbitPokemon = () => {
+  var ability = document.getElementById('selectabilities');
+  var item = document.getElementById('item');
+  var hp = document.getElementById('hpev');
+  var atk = document.getElementById('atkev');
+  var def = document.getElementById('defev');
+  var spa = document.getElementById('spaev');
+  var spd = document.getElementById('spdev');
+  var spe = document.getElementById('speev');
+  var nature = document.getElementById('selectednatures');
+  var move1 = document.getElementById('move1');
+  var move2 = document.getElementById('move2');
+  var move3 = document.getElementById('move3');
+  var move4 = document.getElementById('move4');
 
-var natureArr = [
-  'Adamant (+Atk, -Spa)',
-  'Bashful',
-  'Bold (+Def, -Atk)',
-  'Brave (+Atk, -Spe)',
-  'Calm (+Spd, -Atk)',
-  'Careful (+Spd, -Spa)',
-  'Docile',
-  'Gentle (+Spd, -Def)',
-  'Hardy',
-  'Hasty (+Spe, -Def)',
-  'Impish (+Def, -Spa)',
-  'Jolly (+Spe, -Spa)',
-  'Lax (+Def, -Spd)',
-  'Lonely (+Atk, -Def)',
-  'Mild (+Spa, -Def)',
-  'Modest (+Spa, -Atk)',
-  'Naive (+Spe, -Spd)',
-  'Naughty (+Atk, -Spd)',
-  'Quiet (+Spa, -Spe)',
-  'Quirky',
-  'Rash (+Spa, -Spd)',
-  'Relaxed (+Def, -Spe)',
-  'Sassy (+Spd, -Spe)',
-  'Serious',
-  'Timid (+Spe, -Atk)'
-];
+  let pokemon = {
+    name: `${data.name}`,
+    sprite: `${data.sprites.front_default}`,
+    type: {
+      type1: `${data.types[0].type.name}`,
+      type2: data.types.length > 1 ? `${data.types[1].type.name}` : null
+    },
+    ability: `${ability.options[ability.selectedIndex].value}`,
+    item: `${item.value}`,
+    EVs: {
+      hpev: `${hp.value}`,
+      atkev: `${atk.value}`,
+      defev: `${def.value}`,
+      spaev: `${spa.value}`,
+      spdev: `${spd.value}`,
+      speev: `${spe.value}`
+    },
+    nature: `${nature.options[nature.selectedIndex].value}`,
+    moves: {
+      move1: `${move1.value}`,
+      move2: `${move2.value}`,
+      move3: `${move3.value}`,
+      move4: `${move4.value}`
+    }
+  };
+
+  pokemonTeam.push(pokemon);
+  console.log(pokemonTeam);
+};
 
 const PokeCard = props => {
   const [EvHide, setEvHide] = useState('hidden');
   const [moveHide, setMoveHide] = useState('hidden');
-  var data = props.data;
+  data = props.data;
   if (data.length === 0) {
     return <div>Find a Pokemon!</div>;
   } else {
@@ -106,7 +111,7 @@ const PokeCard = props => {
             {' '}
             Individual EVs can't be above 252
           </p>
-          {evObj.map(value => {
+          {evArr.map(value => {
             return (
               <label htmlFor={value.id} id="evLabel" key={value.id}>
                 {value.text}
@@ -123,44 +128,46 @@ const PokeCard = props => {
               </label>
             );
           })}
-          <div id="naturecontainer">
-            <label htmlFor="selectednatures">
-              Nature:
-              <select id="selectednatures">
-                {natureArr.map((value, index) => {
-                  return (
-                    <option key={index} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
-              </select>
-            </label>
-          </div>
-          <div id="movecontainer">
-            Moves:
-            <p id="moveError" className={moveHide}>
-              One or more invalid moves
-            </p>
-            {moveObj.map(value => {
-              return (
-                <label htmlFor={value.id} id="moveLabel" key={value.id}>
-                  {value.text}
-                  <input
-                    id={value.id}
-                    type="text"
-                    onBlur={e =>
-                      possibleMoves.includes(e.target.value)
-                        ? setMoveHide('hidden')
-                        : setMoveHide('nothidden')
-                    }
-                  />
-                </label>
-              );
-            })}
-          </div>
-          <button id="sumbitpokemon">Submit Pokemon</button>
         </div>
+        <div id="naturecontainer">
+          <label htmlFor="selectednatures">
+            Nature:
+            <select id="selectednatures">
+              {natureArr.map((value, index) => {
+                return (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+        </div>
+        <div id="movecontainer">
+          Moves:
+          <p id="moveError" className={moveHide}>
+            One or more invalid moves
+          </p>
+          {moveArr.map(value => {
+            return (
+              <label htmlFor={value.id} id="moveLabel" key={value.id}>
+                {value.text}
+                <input
+                  id={value.id}
+                  type="text"
+                  onBlur={e =>
+                    possibleMoves.includes(e.target.value)
+                      ? setMoveHide('hidden')
+                      : setMoveHide('nothidden')
+                  }
+                />
+              </label>
+            );
+          })}
+        </div>
+        <button id="sumbitpokemon" onClick={sumbitPokemon}>
+          Submit Pokemon
+        </button>
       </div>
     );
   }
