@@ -1,33 +1,51 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import CreateTeam from './StartTeam';
-import DeleteTeam from './Components/Deleting/DeleteTeam';
 import Nav from './Components/Navigation/Navigation';
 import SignIn from './Components/Signing/SignIn';
 import Register from './Components/Signing/Register';
-import TeamBuilder from './Components/Teams/TeamBuilder';
 import TeamList from './Components/Teams/TeamList';
-import DeletePokemon from './Components/Deleting/DeletePokemon';
+
 import Home from './Home';
 
-const App = () => {
-  return (
-    <div>
-      <BrowserRouter>
-        <div>
-          <Nav />
-          <Route path="/" exact component={Home} />
-          <Route path="/signin" exact component={SignIn} />
-          <Route path="/register" exact component={Register} />
-          <Route path="/createteam" exact component={CreateTeam} />
-          <Route path="/deleteteam" exact component={DeleteTeam} />
-          <Route path="/teams" exact component={TeamList} />
-          <Route path="/teammaker" exact component={TeamBuilder} />
-          <Route path="/deletepokemon" exact component={DeletePokemon} />
-        </div>
-      </BrowserRouter>
-    </div>
-  );
+const initialUserState = {
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: ''
+  }
 };
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = initialUserState;
+  }
+
+  onRouteChange = route => {
+    if (route === 'signout') {
+      this.setState({ isSignedIn: false });
+    } else if (route === 'home') {
+      this.setState({ isSignedIn: true });
+    }
+    this.setState({ route: route });
+  };
+
+  render() {
+    const { isSignedIn, route } = this.state;
+    return (
+      <div className="App">
+        <Nav isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        {route === 'home' ? (
+          <TeamList />
+        ) : route === 'signin' ? (
+          <SignIn onRouteChange={this.onRouteChange} />
+        ) : (
+          <Register onRouteChange={this.onRouteChange} />
+        )}
+      </div>
+    );
+  }
+}
 
 export default App;

@@ -1,17 +1,41 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const Nav = () => {
-  return (
-    <div className="right menu">
-      <Link to="/signin" className="item">
-        Sign In
-      </Link>
-      <Link to="/register" className="item">
-        Register
-      </Link>
-    </div>
-  );
+const Nav = ({ onRouteChange, isSignedIn }) => {
+  if (isSignedIn) {
+    return (
+      <div className="ui secondary  menu">
+        <div class="header item">Pokemon Team Builder</div>
+        <div className="right menu">
+          <button
+            className="ui red button"
+            onClick={() => onRouteChange('signout')}
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  } else if (isSignedIn === false) {
+    return (
+      <div className="ui secondary  menu">
+        <div class="header item">Pokemon Team Builder</div>
+        <div className="right menu">
+          <button
+            className="ui red button"
+            onClick={() => onRouteChange('signin')}
+          >
+            Sign In
+          </button>
+          <button
+            className="ui red button"
+            onClick={() => onRouteChange('register')}
+          >
+            Register
+          </button>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Nav;
