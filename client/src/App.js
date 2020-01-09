@@ -3,8 +3,8 @@ import Nav from './Components/Navigation/Navigation';
 import SignIn from './Components/Signing/SignIn';
 import Register from './Components/Signing/Register';
 import TeamList from './Components/Teams/TeamList';
-
-import Home from './Home';
+import StartTeam from './Components/CreateTeam/StartTeam';
+import TeamBuilder from './Components/Teams/TeamBuilder';
 
 const initialUserState = {
   route: 'signin',
@@ -23,9 +23,9 @@ class App extends React.Component {
   }
 
   onRouteChange = route => {
-    if (route === 'signout') {
+    if (route === 'signin') {
       this.setState({ isSignedIn: false });
-    } else if (route === 'home') {
+    } else if (route === 'teamlist') {
       this.setState({ isSignedIn: true });
     }
     this.setState({ route: route });
@@ -36,12 +36,16 @@ class App extends React.Component {
     return (
       <div className="App">
         <Nav isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
-        {route === 'home' ? (
-          <TeamList />
+        {route === 'teamlist' ? (
+          <TeamList onRouteChange={this.onRouteChange} />
         ) : route === 'signin' ? (
           <SignIn onRouteChange={this.onRouteChange} />
-        ) : (
+        ) : route === 'register' ? (
           <Register onRouteChange={this.onRouteChange} />
+        ) : route === 'createteam' ? (
+          <StartTeam onRouteChange={this.onRouteChange} />
+        ) : (
+          <TeamBuilder onRouteChange={this.onRouteChange} />
         )}
       </div>
     );

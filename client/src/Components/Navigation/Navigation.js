@@ -8,7 +8,7 @@ const Nav = ({ onRouteChange, isSignedIn }) => {
         <div className="right menu">
           <button
             className="ui red button"
-            onClick={() => onRouteChange('signout')}
+            onClick={() => onRouteChange('signin')}
           >
             Sign Out
           </button>

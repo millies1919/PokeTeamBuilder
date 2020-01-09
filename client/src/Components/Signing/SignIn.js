@@ -18,7 +18,7 @@ const SignIn = ({ onRouteChange }) => {
           <button
             className="ui red button"
             type="submit"
-            onClick={() => onRouteChange('home')}
+            onClick={() => onRouteChange('teamlist')}
           >
             Sign In
           </button>

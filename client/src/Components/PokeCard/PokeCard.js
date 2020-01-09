@@ -165,7 +165,11 @@ const PokeCard = props => {
             );
           })}
         </div>
-        <button id="sumbitpokemon" onClick={sumbitPokemon}>
+        <button
+          id="sumbitpokemon"
+          className="ui red button"
+          onClick={sumbitPokemon}
+        >
           Submit Pokemon
         </button>
       </div>

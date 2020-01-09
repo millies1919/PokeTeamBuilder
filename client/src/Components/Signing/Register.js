@@ -3,7 +3,7 @@ import './SignIn.css';
 
 const Register = ({ onRouteChange }) => {
   return (
-    <div className="signin-container">
+    <div className="register-container">
       <div className="ui card">
         <h1 className="ui header">Register:</h1>
         <div className="ui form">
@@ -22,7 +22,7 @@ const Register = ({ onRouteChange }) => {
           <button
             className="ui red button"
             type="submit"
-            onClick={() => onRouteChange('home')}
+            onClick={() => onRouteChange('teamlist')}
           >
             Register
           </button>
