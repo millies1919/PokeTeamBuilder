@@ -6,11 +6,12 @@ const TeamList = ({ onRouteChange }) => {
   const renderList = () => {
     return testArray.map(team => {
       return (
-        <div className="item">
+        <div className="item" key={team.name}>
           <i className="large middle aligned icon camera" />
           <div className="content" onClick={() => onRouteChange('teambuilder')}>
             {team.name}
           </div>
+          <button className="ui red button">Delete</button>
         </div>
       );
     });

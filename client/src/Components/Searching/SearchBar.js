@@ -20,13 +20,17 @@ const SearchBar = () => {
   return (
     <div>
       <h3>Search for a Pokemon</h3>
-      <form onSubmit={searchSubmit}>
+      <form>
         <input
           id="inputpokemon"
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
-        ></input>
+        />
+        <button onClick={searchSubmit} className="ui red button">
+          {' '}
+          Search
+        </button>
       </form>
 
       <div>

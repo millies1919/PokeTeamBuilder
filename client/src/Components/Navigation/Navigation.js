@@ -4,7 +4,7 @@ const Nav = ({ onRouteChange, isSignedIn }) => {
   if (isSignedIn) {
     return (
       <div className="ui secondary  menu">
-        <div class="header item">Pokemon Team Builder</div>
+        <div className="header item">Pokemon Team Builder</div>
         <div className="right menu">
           <button
             className="ui red button"
@@ -18,7 +18,7 @@ const Nav = ({ onRouteChange, isSignedIn }) => {
   } else if (isSignedIn === false) {
     return (
       <div className="ui secondary  menu">
-        <div class="header item">Pokemon Team Builder</div>
+        <div className="header item">Pokemon Team Builder</div>
         <div className="right menu">
           <button
             className="ui red button"
