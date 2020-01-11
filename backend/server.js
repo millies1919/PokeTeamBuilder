@@ -8,15 +8,24 @@ const database = {
   users: [
     {
       id: '123',
-      username: 'john',
+      username: 'betty',
       email: 'john@gmail.com',
       password: 'cookies'
     }
   ]
 };
 
+const team = {
+  teams: [
+    {
+      id: '123',
+      teamname: 'Pikachu team'
+    }
+  ]
+};
+
 app.get('/', (req, res) => {
-  res.send('this is working');
+  res.send(database);
 });
 
 app.post('/signin', (req, res) => {
@@ -31,13 +40,33 @@ app.post('/signin', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, username, password } = req.body;
   database.users.push({
     id: '125',
-    username: name,
+    username: username,
     email: email,
     password: password
   });
+  res.json(database.users[database.users.length - 1]);
+});
+
+app.post('/newteam', (req, res) => {
+  console.log(req.body);
+  team.teams.push({
+    id: '124',
+    teamname: req.body.teamname
+  });
+  res.json(team.teams[team.teams.length - 1]);
+});
+
+app.post('/newpokemon', (req, res) => {
+  console.log(req.body);
+  team.teams.push({
+    id: '124',
+    teamname: teamname,
+    teamname: req.body.pokemon
+  });
+  res.json(pokemons.pokemon[pokemons.pokemon.length - 1]);
 });
 
 app.listen(3000, () => {
