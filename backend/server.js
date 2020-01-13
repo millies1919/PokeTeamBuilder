@@ -23,6 +23,9 @@ const team = {
     }
   ]
 };
+const pokemons = {
+  pokemon: [{}]
+};
 
 app.get('/', (req, res) => {
   res.send(database);
@@ -61,10 +64,33 @@ app.post('/newteam', (req, res) => {
 
 app.post('/newpokemon', (req, res) => {
   console.log(req.body);
-  team.teams.push({
+  const { teamname, name } = req.body;
+  pokemons.pokemon.push({
     id: '124',
     teamname: teamname,
-    teamname: req.body.pokemon
+    name: name,
+    spriteUrl: spriteUrl,
+    type: {
+      type1: type1,
+      type2: type2
+    },
+    ability: ability,
+    item: item,
+    EVs: {
+      hpev: hpev,
+      atkev: atkev,
+      defev: defev,
+      spaev: spaev,
+      spdev: spdev,
+      speev: speev
+    },
+    nature: nature,
+    moves: {
+      move1: move1,
+      move2: move2,
+      move3: move3,
+      move4: move4
+    }
   });
   res.json(pokemons.pokemon[pokemons.pokemon.length - 1]);
 });
@@ -73,17 +99,39 @@ app.listen(3000, () => {
   console.log('app is running');
 });
 
+//needs to be changed for Db
+app.get('/teams/:id', (req, res) => {
+  const { id } = req.params;
+  database.users.forEach(team => {
+    if (team.id === id) {
+      res.json(team.id);
+    } else {
+      res.status(404).json('No teams yet');
+    }
+  });
+});
+
+app.get('/pokemons/:id/:teamname', (req, res) => {
+  const { id, teamname } = req.params;
+  database.users.forEach(pokemon => {
+    if (pokemon.id === id && pokemon.teamname === teamname) {
+      res.json(pokemon.id);
+    } else {
+      res.status(404).json('No teams yet');
+    }
+  });
+});
 /*
 /signin --> POST = success/fail
 /register --> POST = user
 /createteam --> POST = team
 /addpokemon --> POST = pokemon
-/profile/:userId --> GET = user
+/team/:userId --> GET = team
+/pokemon/:userId, teamname --> GET = pokemon
+
 /updateteam/:teamname --> PUT = team
 /updatepokemon/:teamname --> PUT = success/fail
 /deleteteam --> DELETE = success/fail
 /deletepokemon --> DELETE = success/fail
-/team/:userId --> GET = team
-/pokemon/:userId, teamname --> GET = pokemon
 
 */
