@@ -22,6 +22,12 @@ class App extends React.Component {
     this.state = initialUserState;
   }
 
+  componentDidMount() {
+    fetch('http://localhost:3000/')
+      .then(response => response.json())
+      .then(console.log);
+  }
+
   onRouteChange = route => {
     if (route === 'signin') {
       this.setState({ isSignedIn: false });

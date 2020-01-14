@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.register-container {
+  text-align: center;
+}
+
 div.ui.card {
   display: inline-block;
   padding: 30px;

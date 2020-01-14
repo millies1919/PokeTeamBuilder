@@ -1,8 +1,11 @@
 const express = require('express');
-
+const bcrypt = require('bcrypt-nodejs');
 const app = express();
+const cors = require('cors');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -10,7 +13,9 @@ const database = {
       id: '123',
       username: 'betty',
       email: 'john@gmail.com',
-      password: 'cookies'
+      password: 'cookies',
+      teamname: 'team1',
+      pokemon: ['Pikachu', 'charmander', 'diglett']
     }
   ]
 };
@@ -28,10 +33,12 @@ const pokemons = {
 };
 
 app.get('/', (req, res) => {
-  res.send(database);
+  res.send(database.users);
 });
 
 app.post('/signin', (req, res) => {
+  bcrypt.compare('bacon', hash, function(err, hash) {});
+  bcrypt.compare('bacon', hash, function(err, hash) {});
   if (
     req.body.username === database.users[0].username &&
     req.body.password === database.users[0].password
@@ -44,6 +51,9 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { email, username, password } = req.body;
+  bcrypt.hash(password, null, null, function(err, hash) {
+    console.log(hash);
+  });
   database.users.push({
     id: '125',
     username: username,
@@ -95,10 +105,6 @@ app.post('/newpokemon', (req, res) => {
   res.json(pokemons.pokemon[pokemons.pokemon.length - 1]);
 });
 
-app.listen(3000, () => {
-  console.log('app is running');
-});
-
 //needs to be changed for Db
 app.get('/teams/:id', (req, res) => {
   const { id } = req.params;
@@ -113,14 +119,94 @@ app.get('/teams/:id', (req, res) => {
 
 app.get('/pokemons/:id/:teamname', (req, res) => {
   const { id, teamname } = req.params;
+  let found = false;
   database.users.forEach(pokemon => {
     if (pokemon.id === id && pokemon.teamname === teamname) {
+      found = true;
       res.json(pokemon.id);
+    }
+  });
+  if (!found) {
+    res.status(404).json('No teams yet');
+  }
+});
+
+app.delete('pokemons/:id/:teamname/:pokemon', (req, res) => {
+  const { id, teamname, name } = req.params;
+  database.users.forEach(pokemon => {
+    if (
+      pokemon.id === id &&
+      pokemon.teamname === teamname &&
+      pokemon.name === name
+    ) {
+      let slice = database.users.indexOf(pokemon);
+      database.users.pokemon.splice(slice, 1);
+      res.json(database.users.pokemon);
     } else {
-      res.status(404).json('No teams yet');
+      res.status(404).json('No pokemon to delete');
     }
   });
 });
+
+app.delete('teams/:id/:teamname', (req, res) => {
+  const { id, teamname } = req.params;
+  database.users.forEach(teamname => {
+    if (database.users.id === id && database.users.teamname === teamname) {
+      let slice = database.users.indexOf(teamname);
+      database.users.teams.splice(slice, 1);
+      res.json(database.users.teams);
+    } else {
+      res.status(404).json('No team to delete');
+    }
+  });
+});
+
+//put in replace logic
+app.put('pokemons/:id/:teamname/:pokemon', (req, res) => {
+  const { id, teamname, name } = req.params;
+  database.users.forEach(pokemon => {
+    if (
+      pokemon.id === id &&
+      pokemon.teamname === teamname &&
+      pokemon.name === name
+    ) {
+      pokemons.pokemon.push({
+        id: '124',
+        teamname: teamname,
+        name: name,
+        spriteUrl: spriteUrl,
+        type: {
+          type1: type1,
+          type2: type2
+        },
+        ability: ability,
+        item: item,
+        EVs: {
+          hpev: hpev,
+          atkev: atkev,
+          defev: defev,
+          spaev: spaev,
+          spdev: spdev,
+          speev: speev
+        },
+        nature: nature,
+        moves: {
+          move1: move1,
+          move2: move2,
+          move3: move3,
+          move4: move4
+        }
+      });
+    } else {
+      res.status(404).json('cannot find pokemon');
+    }
+  });
+});
+
+app.listen(3000, () => {
+  console.log('app is running');
+});
+
 /*
 /signin --> POST = success/fail
 /register --> POST = user
@@ -128,10 +214,10 @@ app.get('/pokemons/:id/:teamname', (req, res) => {
 /addpokemon --> POST = pokemon
 /team/:userId --> GET = team
 /pokemon/:userId, teamname --> GET = pokemon
-
-/updateteam/:teamname --> PUT = team
-/updatepokemon/:teamname --> PUT = success/fail
-/deleteteam --> DELETE = success/fail
 /deletepokemon --> DELETE = success/fail
+/deleteteam --> DELETE = success/fail
+/updatepokemon/:teamname --> PUT = success/fail
+
+
 
 */
