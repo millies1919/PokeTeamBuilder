@@ -28,6 +28,16 @@ class App extends React.Component {
       .then(console.log);
   }
 
+  loadUser = data => {
+    this.setState({
+      user: {
+        id: data.id,
+        email: data.email,
+        username: data.username
+      }
+    });
+  };
+
   onRouteChange = route => {
     if (route === 'signin') {
       this.setState({ isSignedIn: false });
@@ -43,11 +53,17 @@ class App extends React.Component {
       <div className="App">
         <Nav isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         {route === 'teamlist' ? (
-          <TeamList onRouteChange={this.onRouteChange} />
+          <TeamList
+            onRouteChange={this.onRouteChange}
+            id={this.state.user.id}
+          />
         ) : route === 'signin' ? (
-          <SignIn onRouteChange={this.onRouteChange} />
+          <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : route === 'register' ? (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
         ) : route === 'createteam' ? (
           <StartTeam onRouteChange={this.onRouteChange} />
         ) : (

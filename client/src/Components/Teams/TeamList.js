@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const testArray = [{ name: 'team1' }, { name: 'team2' }, { name: 'team3' }];
 
-const TeamList = ({ onRouteChange }) => {
+const TeamList = ({ onRouteChange, id }) => {
+  useEffect(() => {
+    fetch('http://localhost:3000/teams/:id');
+  });
+
   const renderList = () => {
     return testArray.map(team => {
       return (

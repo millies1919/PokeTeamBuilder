@@ -2,24 +2,29 @@ const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 const app = express();
 const cors = require('cors');
+const knex = require('knex');
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: 'Niyrtxqo19',
+    database: 'PokemonTeamBuilder'
+  }
+});
+
+db.select('*')
+  .from('users')
+  .then(data => {
+    console.log(data);
+  });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-const database = {
-  users: [
-    {
-      id: '123',
-      username: 'betty',
-      email: 'john@gmail.com',
-      password: 'cookies',
-      teamname: 'team1',
-      pokemon: ['Pikachu', 'charmander', 'diglett']
-    }
-  ]
-};
-
+let count = 1;
 const team = {
   teams: [
     {
@@ -37,30 +42,30 @@ app.get('/', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
-  bcrypt.compare('bacon', hash, function(err, hash) {});
-  bcrypt.compare('bacon', hash, function(err, hash) {});
   if (
     req.body.username === database.users[0].username &&
     req.body.password === database.users[0].password
   ) {
-    res.json('success');
+    res.json(database.users[0]);
   } else {
     res.status(400).json('error logging in');
   }
 });
 
 app.post('/register', (req, res) => {
-  const { email, username, password } = req.body;
-  bcrypt.hash(password, null, null, function(err, hash) {
-    console.log(hash);
-  });
-  database.users.push({
-    id: '125',
-    username: username,
-    email: email,
-    password: password
-  });
-  res.json(database.users[database.users.length - 1]);
+  const { email, username } = req.body;
+  db('users')
+    .returning('*')
+    .insert({
+      email: email,
+      username: username,
+      id: count
+    })
+    .then(user => {
+      res.json(user[0]);
+      count++;
+    })
+    .catch(err => res.status(400).json('unable to register'));
 });
 
 app.post('/newteam', (req, res) => {
@@ -108,9 +113,9 @@ app.post('/newpokemon', (req, res) => {
 //needs to be changed for Db
 app.get('/teams/:id', (req, res) => {
   const { id } = req.params;
-  database.users.forEach(team => {
+  team.teams.forEach(team => {
     if (team.id === id) {
-      res.json(team.id);
+      res.json(team);
     } else {
       res.status(404).json('No teams yet');
     }
