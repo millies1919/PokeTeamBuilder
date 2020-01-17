@@ -1,24 +1,54 @@
-import React, { useEffect } from 'react';
-
-const testArray = [{ name: 'team1' }, { name: 'team2' }, { name: 'team3' }];
+import React, { useEffect, useState } from 'react';
 
 const TeamList = ({ onRouteChange, id }) => {
+  const [teamList, setTeamList] = useState([]);
+
   useEffect(() => {
-    fetch('http://localhost:3000/teams/:id');
-  });
+    fetch(`http://localhost:3000/teams/${id}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(teams => {
+        setTeamList(teams);
+      });
+  }, []);
+
+  const deleteTeam = teamname => {
+    return fetch(`http://localhost:3000/teamdelete/${teamname}/${id}`, {
+      method: 'delete'
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(teams => {
+        setTeamList(teams);
+      });
+  };
 
   const renderList = () => {
-    return testArray.map(team => {
-      return (
-        <div className="item" key={team.name}>
-          <i className="large middle aligned icon camera" />
-          <div className="content" onClick={() => onRouteChange('teambuilder')}>
-            {team.name}
+    if (teamList !== []) {
+      return teamList.map(team => {
+        return (
+          <div className="item" key={team.teamname}>
+            <i className="large middle aligned icon camera" />
+            <div
+              className="content"
+              onClick={() => onRouteChange('teambuilder')}
+            >
+              {team.teamname}
+            </div>
+            <button
+              className="ui red button"
+              onClick={() => deleteTeam(team.teamname)}
+            >
+              Delete
+            </button>
           </div>
-          <button className="ui red button">Delete</button>
-        </div>
-      );
-    });
+        );
+      });
+    } else {
+      return <div>Create a Team!</div>;
+    }
   };
 
   return (

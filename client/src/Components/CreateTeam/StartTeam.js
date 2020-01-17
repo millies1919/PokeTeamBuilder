@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const CreateTeam = ({ onRouteChange }) => {
+const CreateTeam = ({ onRouteChange, id }) => {
+  const [teamname, setTeamname] = useState('');
+
+  const teamSubmit = () => {
+    fetch('http://localhost:3000/newteam', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: id,
+        teamname: teamname
+      })
+    })
+      .then(response => response.json())
+      .then(() => {
+        onRouteChange('teamlist');
+      });
+  };
+
+  const onTeamnameChange = e => {
+    setTeamname(e.target.value);
+  };
+
   return (
     <div>
       <div className="signin-container">
@@ -9,12 +30,14 @@ const CreateTeam = ({ onRouteChange }) => {
           <div className="ui form">
             <div className="field">
               <label>Team Name</label>
-              <input type="text" name="teamname" placeholder="Team Name" />
+              <input
+                type="text"
+                name="teamname"
+                placeholder="Team Name"
+                onChange={onTeamnameChange}
+              />
             </div>
-            <button
-              className="ui red button"
-              onClick={() => onRouteChange('teamlist')}
-            >
+            <button className="ui red button" onClick={teamSubmit}>
               Create
             </button>
           </div>

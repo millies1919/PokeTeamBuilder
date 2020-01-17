@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SignIn.css';
 
-const SignIn = ({ onRouteChange }) => {
+const SignIn = ({ onRouteChange, loadUser }) => {
   const [signInUser, setSignUser] = useState('');
   const [signInPW, setSignPW] = useState('');
 
@@ -25,7 +25,7 @@ const SignIn = ({ onRouteChange }) => {
       .then(response => response.json())
       .then(user => {
         if (user.id) {
-          this.props.loadUser(user);
+          loadUser(user);
           onRouteChange('teamlist');
         }
       });

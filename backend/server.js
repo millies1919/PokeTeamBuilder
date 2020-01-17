@@ -24,64 +24,99 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-let count = 1;
-const team = {
-  teams: [
-    {
-      id: '123',
-      teamname: 'Pikachu team'
-    }
-  ]
-};
 const pokemons = {
   pokemon: [{}]
 };
 
 app.get('/', (req, res) => {
-  res.send(database.users);
+  res.send('it is working');
 });
-
+//DONE
 app.post('/signin', (req, res) => {
-  if (
-    req.body.username === database.users[0].username &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(400).json('error logging in');
-  }
+  db.select('username', 'hash')
+    .where('username', '=', req.body.username)
+    .from('login')
+    .then(data => {
+      const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+      if (isValid) {
+        return db
+          .select('*')
+          .from('users')
+          .where('username', '=', req.body.username)
+          .then(user => {
+            res.json(user[0]);
+          })
+          .catch(err => res.status(400).json('unable to find user'));
+      } else {
+        res.status(400).json('wrong credentials');
+      }
+    })
+    .catch(err => res.status(400).json('wrong credentials'));
 });
-
+//DONE
 app.post('/register', (req, res) => {
-  const { email, username } = req.body;
-  db('users')
-    .returning('*')
-    .insert({
-      email: email,
-      username: username,
-      id: count
-    })
-    .then(user => {
-      res.json(user[0]);
-      count++;
-    })
-    .catch(err => res.status(400).json('unable to register'));
+  const { email, username, password } = req.body;
+  const hash = bcrypt.hashSync(password);
+  db.transaction(trx => {
+    trx
+      .insert({
+        hash: hash,
+        username: username
+      })
+      .into('login')
+      .returning('username')
+      .then(loginUsername => {
+        return trx('users')
+          .returning('*')
+          .insert({
+            email: email,
+            username: loginUsername[0]
+          })
+          .then(user => {
+            res.json(user[0]);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch(err => res.status(400).json(err));
 });
-
+//DONE
 app.post('/newteam', (req, res) => {
-  console.log(req.body);
-  team.teams.push({
-    id: '124',
-    teamname: req.body.teamname
-  });
-  res.json(team.teams[team.teams.length - 1]);
+  const { id, teamname } = req.body;
+  db('teams')
+    .returning('*')
+    .insert({ id: id, teamname: teamname })
+    .then(teams => {
+      res.json(teams);
+    })
+    .catch(err => res.status(400).json('unable to create team'));
 });
 
 app.post('/newpokemon', (req, res) => {
   console.log(req.body);
-  const { teamname, name } = req.body;
+  const {
+    teamname,
+    name,
+    id,
+    spriteUrl,
+    type1,
+    type2,
+    ability,
+    item,
+    hpev,
+    atkev,
+    defev,
+    spaev,
+    spdev,
+    speev,
+    nature,
+    move1,
+    move2,
+    move3,
+    move4
+  } = req.body;
   pokemons.pokemon.push({
-    id: '124',
+    id: id,
     teamname: teamname,
     name: name,
     spriteUrl: spriteUrl,
@@ -109,17 +144,22 @@ app.post('/newpokemon', (req, res) => {
   });
   res.json(pokemons.pokemon[pokemons.pokemon.length - 1]);
 });
-
-//needs to be changed for Db
+//DONE
 app.get('/teams/:id', (req, res) => {
   const { id } = req.params;
-  team.teams.forEach(team => {
-    if (team.id === id) {
-      res.json(team);
-    } else {
-      res.status(404).json('No teams yet');
-    }
-  });
+  db.select('*')
+    .from('teams')
+    .where({
+      id: id
+    })
+    .then(teams => {
+      if (teams.length) {
+        res.json(teams);
+      } else {
+        res.json([]);
+      }
+    })
+    .catch(err => res.status(400).json('not found'));
 });
 
 app.get('/pokemons/:id/:teamname', (req, res) => {
@@ -136,7 +176,7 @@ app.get('/pokemons/:id/:teamname', (req, res) => {
   }
 });
 
-app.delete('pokemons/:id/:teamname/:pokemon', (req, res) => {
+app.delete('/pokemons/:id/:teamname/:pokemon', (req, res) => {
   const { id, teamname, name } = req.params;
   database.users.forEach(pokemon => {
     if (
@@ -152,18 +192,23 @@ app.delete('pokemons/:id/:teamname/:pokemon', (req, res) => {
     }
   });
 });
-
-app.delete('teams/:id/:teamname', (req, res) => {
+//DONE EXCEPT FOR POKEMON
+app.delete('/teamdelete/:teamname/:id', (req, res) => {
   const { id, teamname } = req.params;
-  database.users.forEach(teamname => {
-    if (database.users.id === id && database.users.teamname === teamname) {
-      let slice = database.users.indexOf(teamname);
-      database.users.teams.splice(slice, 1);
-      res.json(database.users.teams);
-    } else {
-      res.status(404).json('No team to delete');
-    }
-  });
+  db('teams')
+    .where('teamname', teamname)
+    .andWhere('id', id)
+    .del()
+    .then(() => {
+      return db
+        .select('*')
+        .from('teams')
+        .where({ id: id })
+        .then(teams => {
+          res.send(teams);
+        });
+    })
+    .catch(err => res.status(400).json('not found'));
 });
 
 //put in replace logic

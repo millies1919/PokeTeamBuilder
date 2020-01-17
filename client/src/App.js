@@ -22,12 +22,6 @@ class App extends React.Component {
     this.state = initialUserState;
   }
 
-  componentDidMount() {
-    fetch('http://localhost:3000/')
-      .then(response => response.json())
-      .then(console.log);
-  }
-
   loadUser = data => {
     this.setState({
       user: {
@@ -65,7 +59,10 @@ class App extends React.Component {
             loadUser={this.loadUser}
           />
         ) : route === 'createteam' ? (
-          <StartTeam onRouteChange={this.onRouteChange} />
+          <StartTeam
+            onRouteChange={this.onRouteChange}
+            id={this.state.user.id}
+          />
         ) : (
           <TeamBuilder onRouteChange={this.onRouteChange} />
         )}
