@@ -91,58 +91,57 @@ app.post('/newteam', (req, res) => {
     })
     .catch(err => res.status(400).json('unable to create team'));
 });
-
+//DONE
 app.post('/newpokemon', (req, res) => {
   console.log(req.body);
   const {
     teamname,
     name,
     id,
-    spriteUrl,
+    sprite,
     type1,
     type2,
     ability,
     item,
     hpev,
-    atkev,
-    defev,
-    spaev,
-    spdev,
-    speev,
+    attackev,
+    defenseev,
+    specialattackev,
+    specialdefenseev,
+    speedev,
     nature,
     move1,
     move2,
     move3,
     move4
   } = req.body;
-  pokemons.pokemon.push({
-    id: id,
-    teamname: teamname,
-    name: name,
-    spriteUrl: spriteUrl,
-    type: {
+  db('pokemon')
+    .returning('*')
+    .insert({
+      id: id,
+      teamname: teamname,
+      name: name,
+      sprite: sprite,
       type1: type1,
-      type2: type2
-    },
-    ability: ability,
-    item: item,
-    EVs: {
+      type2: type2,
+      ability: ability,
+      item: item,
       hpev: hpev,
-      atkev: atkev,
-      defev: defev,
-      spaev: spaev,
-      spdev: spdev,
-      speev: speev
-    },
-    nature: nature,
-    moves: {
+      attackev: attackev,
+      defenseev: defenseev,
+      specialattackev: specialattackev,
+      specialdefenseev: specialdefenseev,
+      speedev: speedev,
+      nature: nature,
       move1: move1,
       move2: move2,
       move3: move3,
       move4: move4
-    }
-  });
-  res.json(pokemons.pokemon[pokemons.pokemon.length - 1]);
+    })
+    .then(pokemon => {
+      res.json(pokemon);
+    })
+    .catch(err => res.status(400).json(err));
 });
 //DONE
 app.get('/teams/:id', (req, res) => {
@@ -175,22 +174,25 @@ app.get('/pokemons/:id/:teamname', (req, res) => {
     res.status(404).json('No teams yet');
   }
 });
-
-app.delete('/pokemons/:id/:teamname/:pokemon', (req, res) => {
+//DONE
+app.delete('/deletepokemon/:id/:teamname/:name', (req, res) => {
   const { id, teamname, name } = req.params;
-  database.users.forEach(pokemon => {
-    if (
-      pokemon.id === id &&
-      pokemon.teamname === teamname &&
-      pokemon.name === name
-    ) {
-      let slice = database.users.indexOf(pokemon);
-      database.users.pokemon.splice(slice, 1);
-      res.json(database.users.pokemon);
-    } else {
-      res.status(404).json('No pokemon to delete');
-    }
-  });
+  db('pokemon')
+    .where('teamname', teamname)
+    .andWhere('id', id)
+    .andWhere('name', name)
+    .del()
+    .then(() => {
+      return db
+        .select('*')
+        .from('pokemon')
+        .where({ id: id })
+        .andWhere({ teamname: teamname })
+        .then(pokemon => {
+          res.send(pokemon);
+        });
+    })
+    .catch(err => res.status(400).json('not found'));
 });
 //DONE EXCEPT FOR POKEMON
 app.delete('/teamdelete/:teamname/:id', (req, res) => {

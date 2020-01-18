@@ -9,6 +9,7 @@ import TeamBuilder from './Components/Teams/TeamBuilder';
 const initialUserState = {
   route: 'signin',
   isSignedIn: false,
+  teamname: '',
   user: {
     id: '',
     name: '',
@@ -21,6 +22,13 @@ class App extends React.Component {
     super();
     this.state = initialUserState;
   }
+
+  setTeam = teamname => {
+    this.setState({
+      teamname: teamname
+    });
+    console.log(teamname);
+  };
 
   loadUser = data => {
     this.setState({
@@ -50,6 +58,7 @@ class App extends React.Component {
           <TeamList
             onRouteChange={this.onRouteChange}
             id={this.state.user.id}
+            setTeam={this.setTeam}
           />
         ) : route === 'signin' ? (
           <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
@@ -64,7 +73,11 @@ class App extends React.Component {
             id={this.state.user.id}
           />
         ) : (
-          <TeamBuilder onRouteChange={this.onRouteChange} />
+          <TeamBuilder
+            onRouteChange={this.onRouteChange}
+            teamname={this.state.teamname}
+            id={this.state.user.id}
+          />
         )}
       </div>
     );

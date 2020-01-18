@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import pokeapi from '../../apis/api.js';
 import PokeCard from '../PokeCard/PokeCard';
 
-const SearchBar = () => {
+const SearchBar = props => {
   const [input, setInput] = useState('');
   const [data, setData] = useState([]);
 
@@ -34,7 +34,7 @@ const SearchBar = () => {
       </form>
 
       <div>
-        <PokeCard data={data} />
+        <PokeCard data={data} teamname={props.teamname} id={props.id} />
       </div>
     </div>
   );

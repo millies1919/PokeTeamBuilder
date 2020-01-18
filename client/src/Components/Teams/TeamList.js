@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const TeamList = ({ onRouteChange, id }) => {
+const TeamList = ({ onRouteChange, id, setTeam }) => {
   const [teamList, setTeamList] = useState([]);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const TeamList = ({ onRouteChange, id }) => {
             <div
               className="content"
               onClick={() => onRouteChange('teambuilder')}
+              onMouseUp={() => setTeam(team.teamname)}
             >
               {team.teamname}
             </div>

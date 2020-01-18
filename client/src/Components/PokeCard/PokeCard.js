@@ -25,31 +25,51 @@ const PokeCard = props => {
     let pokemon = {
       name: `${data.name}`,
       sprite: `${data.sprites.front_default}`,
-      type: {
-        type1: `${data.types[0].type.name}`,
-        type2: data.types.length > 1 ? `${data.types[1].type.name}` : null
-      },
+      type1: `${data.types[0].type.name}`,
+      type2: data.types.length > 1 ? `${data.types[1].type.name}` : null,
       ability: `${ability.options[ability.selectedIndex].value}`,
       item: `${item.value}`,
-      EVs: {
-        hpev: `${hp.value}`,
-        atkev: `${atk.value}`,
-        defev: `${def.value}`,
-        spaev: `${spa.value}`,
-        spdev: `${spd.value}`,
-        speev: `${spe.value}`
-      },
+      hpev: `${hp.value}`,
+      atkev: `${atk.value}`,
+      defev: `${def.value}`,
+      spaev: `${spa.value}`,
+      spdev: `${spd.value}`,
+      speev: `${spe.value}`,
       nature: `${nature.options[nature.selectedIndex].value}`,
-      moves: {
-        move1: `${move1.value}`,
-        move2: `${move2.value}`,
-        move3: `${move3.value}`,
-        move4: `${move4.value}`
-      }
+      move1: `${move1.value}`,
+      move2: `${move2.value}`,
+      move3: `${move3.value}`,
+      move4: `${move4.value}`
     };
+
+    pokemonTeam.push(pokemon);
+
     if (pokemonTeam.length < 6) {
-      pokemonTeam.push(pokemon);
-      console.log(pokemonTeam);
+      fetch('http://localhost:3000/newpokemon', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: props.id,
+          teamname: props.teamname,
+          name: pokemon.name,
+          sprite: pokemon.sprite,
+          type1: pokemon.type1,
+          type2: pokemon.type2,
+          ability: pokemon.ability,
+          item: pokemon.item,
+          hpev: pokemon.hpev,
+          attackev: pokemon.atkev,
+          defenseev: pokemon.defev,
+          specialattackev: pokemon.spaev,
+          specialdefenseev: pokemon.spdev,
+          speedev: pokemon.speev,
+          nature: pokemon.nature,
+          move1: pokemon.move1,
+          move2: pokemon.move2,
+          move3: pokemon.move3,
+          move4: pokemon.move4
+        })
+      }).then(response => response.json());
     }
   };
 
@@ -127,7 +147,7 @@ const PokeCard = props => {
                     type="number"
                     max="252"
                     onBlur={e => {
-                      e.target.value >= 252
+                      e.target.value > 252
                         ? setEvHide('nothidden')
                         : setEvHide('hidden');
                     }}
@@ -181,7 +201,11 @@ const PokeCard = props => {
           </button>
         </div>
         <div>
-          <TeamCard team={pokemonTeam} />
+          <TeamCard
+            team={pokemonTeam}
+            id={props.id}
+            teamname={props.teamname}
+          />
         </div>
       </div>
     );
