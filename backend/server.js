@@ -14,12 +14,6 @@ const db = knex({
   }
 });
 
-db.select('*')
-  .from('users')
-  .then(data => {
-    console.log(data);
-  });
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -31,7 +25,7 @@ const pokemons = {
 app.get('/', (req, res) => {
   res.send('it is working');
 });
-//DONE
+//posts signin credentials to table, checks hash to ensure valid login
 app.post('/signin', (req, res) => {
   db.select('username', 'hash')
     .where('username', '=', req.body.username)
@@ -53,7 +47,7 @@ app.post('/signin', (req, res) => {
     })
     .catch(err => res.status(400).json('wrong credentials'));
 });
-//DONE
+//registers a new user to users table
 app.post('/register', (req, res) => {
   const { email, username, password } = req.body;
   const hash = bcrypt.hashSync(password);
@@ -80,7 +74,7 @@ app.post('/register', (req, res) => {
       .catch(trx.rollback);
   }).catch(err => res.status(400).json(err));
 });
-//DONE
+//adds new teams to teams table
 app.post('/newteam', (req, res) => {
   const { id, teamname } = req.body;
   db('teams')
@@ -91,9 +85,8 @@ app.post('/newteam', (req, res) => {
     })
     .catch(err => res.status(400).json('unable to create team'));
 });
-//DONE
+//adds new pokemon to pokemon table
 app.post('/newpokemon', (req, res) => {
-  console.log(req.body);
   const {
     teamname,
     name,
@@ -143,7 +136,7 @@ app.post('/newpokemon', (req, res) => {
     })
     .catch(err => res.status(400).json(err));
 });
-//DONE
+//grabs all teams for a specific user
 app.get('/teams/:id', (req, res) => {
   const { id } = req.params;
   db.select('*')
@@ -160,21 +153,25 @@ app.get('/teams/:id', (req, res) => {
     })
     .catch(err => res.status(400).json('not found'));
 });
-
+//grabs all pokemon for a specific user and teamname
 app.get('/pokemons/:id/:teamname', (req, res) => {
   const { id, teamname } = req.params;
-  let found = false;
-  database.users.forEach(pokemon => {
-    if (pokemon.id === id && pokemon.teamname === teamname) {
-      found = true;
-      res.json(pokemon.id);
-    }
-  });
-  if (!found) {
-    res.status(404).json('No teams yet');
-  }
+  db.select('*')
+    .from('pokemon')
+    .where({
+      id: id
+    })
+    .andWhere({ teamname: teamname })
+    .then(pokemons => {
+      if (pokemons.length) {
+        res.json(pokemons);
+      } else {
+        res.json([]);
+      }
+    })
+    .catch(err => res.status(400).json('not found'));
 });
-//DONE
+//deletes a pokemon from the pokemon table
 app.delete('/deletepokemon/:id/:teamname/:name', (req, res) => {
   const { id, teamname, name } = req.params;
   db('pokemon')
@@ -194,82 +191,39 @@ app.delete('/deletepokemon/:id/:teamname/:name', (req, res) => {
     })
     .catch(err => res.status(400).json('not found'));
 });
-//DONE EXCEPT FOR POKEMON
+//deletes a team and all pokemon of that team from the teams and pokemons table
 app.delete('/teamdelete/:teamname/:id', (req, res) => {
   const { id, teamname } = req.params;
-  db('teams')
-    .where('teamname', teamname)
-    .andWhere('id', id)
-    .del()
-    .then(() => {
-      return db
-        .select('*')
-        .from('teams')
-        .where({ id: id })
-        .then(teams => {
-          res.send(teams);
-        });
-    })
-    .catch(err => res.status(400).json('not found'));
-});
-
-//put in replace logic
-app.put('pokemons/:id/:teamname/:pokemon', (req, res) => {
-  const { id, teamname, name } = req.params;
-  database.users.forEach(pokemon => {
-    if (
-      pokemon.id === id &&
-      pokemon.teamname === teamname &&
-      pokemon.name === name
-    ) {
-      pokemons.pokemon.push({
-        id: '124',
-        teamname: teamname,
-        name: name,
-        spriteUrl: spriteUrl,
-        type: {
-          type1: type1,
-          type2: type2
-        },
-        ability: ability,
-        item: item,
-        EVs: {
-          hpev: hpev,
-          atkev: atkev,
-          defev: defev,
-          spaev: spaev,
-          spdev: spdev,
-          speev: speev
-        },
-        nature: nature,
-        moves: {
-          move1: move1,
-          move2: move2,
-          move3: move3,
-          move4: move4
-        }
-      });
-    } else {
-      res.status(404).json('cannot find pokemon');
-    }
-  });
+  db.transaction(trx => {
+    trx('teams')
+      .where({ teamname: teamname })
+      .andWhere({ id: id })
+      .del()
+      .then(() => {
+        db.select('*')
+          .from('teams')
+          .where({ id: id })
+          .then(teams => {
+            res.send(teams);
+          });
+      })
+      .then(() => {
+        return trx('pokemon')
+          .where('teamname', teamname)
+          .andWhere('id', id)
+          .del()
+          .then(pokemons => {
+            res.json(pokemons);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch(err => res.status(400).json(err));
 });
 
 app.listen(3000, () => {
   console.log('app is running');
 });
 
-/*
-/signin --> POST = success/fail
-/register --> POST = user
-/createteam --> POST = team
-/addpokemon --> POST = pokemon
-/team/:userId --> GET = team
-/pokemon/:userId, teamname --> GET = pokemon
-/deletepokemon --> DELETE = success/fail
-/deleteteam --> DELETE = success/fail
-/updatepokemon/:teamname --> PUT = success/fail
-
-
-
-*/
+//updatepokemon/:id/:teamname --> PUT = success/fail
+//updateteam/:id/:teamname
