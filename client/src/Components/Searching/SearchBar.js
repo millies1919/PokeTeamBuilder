@@ -34,7 +34,13 @@ const SearchBar = props => {
       </form>
 
       <div>
-        <PokeCard data={data} teamname={props.teamname} id={props.id} />
+        <PokeCard
+          data={data}
+          teamname={props.teamname}
+          id={props.id}
+          onAddPokemon={props.onAddPokemon}
+          team={props.team}
+        />
       </div>
     </div>
   );

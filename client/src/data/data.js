@@ -42,7 +42,7 @@ export const moveArr = [
   { id: 'move4', text: 'Move 4:' }
 ];
 
-export var pokemon = {
+export const pokemon = {
   name: '',
   sprite: '',
   type: {

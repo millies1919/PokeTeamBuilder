@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './PokeCard.css';
 import { natureArr, evArr, moveArr } from '../../data/data';
-import TeamCard from '../TeamCard/TeamCard';
-
-let data = [];
-export let pokemonTeam = [];
 
 const PokeCard = props => {
+  const [EvHide, setEvHide] = useState('hidden');
+  const [moveHide, setMoveHide] = useState('hidden');
+  let data = [];
+  let pokemon = {};
+
   const sumbitPokemon = () => {
     var ability = document.getElementById('selectabilities');
     var item = document.getElementById('item');
@@ -22,7 +23,7 @@ const PokeCard = props => {
     var move3 = document.getElementById('move3');
     var move4 = document.getElementById('move4');
 
-    let pokemon = {
+    pokemon = {
       name: `${data.name}`,
       sprite: `${data.sprites.front_default}`,
       type1: `${data.types[0].type.name}`,
@@ -42,9 +43,7 @@ const PokeCard = props => {
       move4: `${move4.value}`
     };
 
-    pokemonTeam.push(pokemon);
-
-    if (pokemonTeam.length < 6) {
+    if (props.team.length < 6) {
       fetch('http://localhost:3000/newpokemon', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -73,8 +72,6 @@ const PokeCard = props => {
     }
   };
 
-  const [EvHide, setEvHide] = useState('hidden');
-  const [moveHide, setMoveHide] = useState('hidden');
   data = props.data;
   if (data.length === 0) {
     return <div>Find a Pokemon!</div>;
@@ -83,7 +80,6 @@ const PokeCard = props => {
     var possibleMoves = data.moves.map(data => {
       return data.move.name;
     });
-    console.log(data);
     return (
       <div id="pokewrapper">
         <div id="entercard">
@@ -196,16 +192,10 @@ const PokeCard = props => {
             id="submitpokemon"
             className="ui red button"
             onClick={sumbitPokemon}
+            onMouseDown={() => props.onAddPokemon(pokemon)} //sending empty object
           >
             Submit Pokemon
           </button>
-        </div>
-        <div>
-          <TeamCard
-            team={pokemonTeam}
-            id={props.id}
-            teamname={props.teamname}
-          />
         </div>
       </div>
     );

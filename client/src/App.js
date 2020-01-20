@@ -10,6 +10,7 @@ const initialUserState = {
   route: 'signin',
   isSignedIn: false,
   teamname: '',
+  team: [],
   user: {
     id: '',
     name: '',
@@ -23,11 +24,20 @@ class App extends React.Component {
     this.state = initialUserState;
   }
 
+  onAddPokemon = pokemon => {
+    this.setState(state => {
+      const team = [...state.team, pokemon];
+      console.log(team);
+      return {
+        team
+      };
+    });
+  };
+
   setTeam = teamname => {
     this.setState({
       teamname: teamname
     });
-    console.log(teamname);
   };
 
   loadUser = data => {
@@ -74,9 +84,11 @@ class App extends React.Component {
           />
         ) : (
           <TeamBuilder
+            onAddPokemon={this.onAddPokemon}
             onRouteChange={this.onRouteChange}
             teamname={this.state.teamname}
             id={this.state.user.id}
+            team={this.state.team}
           />
         )}
       </div>

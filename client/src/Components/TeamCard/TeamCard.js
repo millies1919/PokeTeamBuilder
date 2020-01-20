@@ -1,28 +1,32 @@
-import React from 'react';
-import { pokemonTeam } from '../PokeCard/PokeCard';
+import React, { useEffect, useState } from 'react';
 
-const TeamCard = ({ id, teamname }) => {
+const TeamCard = ({ id, teamname, onAddPokemon, team }) => {
+  useEffect(() => {
+    fetch(`http://localhost:3000/pokemons/${id}/${teamname}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(pokemons => {
+        pokemons.map(pokemon => {
+          onAddPokemon(pokemon);
+        });
+      });
+  }, []);
+
   const deletePokemon = (teamname, id, name) => {
     return fetch(
       `http://localhost:3000/deletepokemon/${id}/${teamname}/${name}`,
       {
         method: 'delete'
       }
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(teams => {
-        let pokeIndex = pokemonTeam.indexOf(name);
-        pokemonTeam.splice(pokeIndex, 1);
-        console.log(pokemonTeam);
-        return pokemonTeam;
-      });
+    ).then(response => {
+      return response.json();
+    });
   };
 
   const renderList = () => {
-    if (pokemonTeam !== undefined) {
-      return pokemonTeam.map(pokemon => {
+    if (team !== undefined) {
+      return team.map(pokemon => {
         return (
           <div className="item" key={pokemon.index}>
             <div className="content">
@@ -42,11 +46,11 @@ const TeamCard = ({ id, teamname }) => {
               <div className="item">{pokemon.item}</div>
               <div className="evs">
                 Hp: {pokemon.hpev}
-                Attack: {pokemon.atkev}
-                Defense: {pokemon.defev}
-                Special Attack: {pokemon.spaev}
-                Special Defense: {pokemon.spdev}
-                Speed: {pokemon.speev}
+                Attack: {pokemon.attackev}
+                Defense: {pokemon.defenseev}
+                Special Attack: {pokemon.specialattackev}
+                Special Defense: {pokemon.specialdefenseev}
+                Speed: {pokemon.speedev}
               </div>
               <div className="nature">{pokemon.nature}</div>
               <div className="ui card">
