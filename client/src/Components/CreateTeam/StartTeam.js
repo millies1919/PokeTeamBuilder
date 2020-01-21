@@ -26,6 +26,12 @@ const CreateTeam = ({ onRouteChange, id }) => {
     <div>
       <div className="signin-container">
         <div className="ui card">
+          <button
+            className="ui right floated icon button"
+            onClick={() => onRouteChange('teamlist')}
+          >
+            <i className="close icon"></i>
+          </button>
           <h1 className="ui header">Create a Pokemon Team:</h1>
           <div className="ui form">
             <div className="field">

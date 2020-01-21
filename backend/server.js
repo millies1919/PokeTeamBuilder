@@ -211,10 +211,7 @@ app.delete('/teamdelete/:teamname/:id', (req, res) => {
         return trx('pokemon')
           .where('teamname', teamname)
           .andWhere('id', id)
-          .del()
-          .then(pokemons => {
-            res.json(pokemons);
-          });
+          .del();
       })
       .then(trx.commit)
       .catch(trx.rollback);

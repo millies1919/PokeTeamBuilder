@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-const TeamCard = ({ id, teamname, onAddPokemon, team }) => {
+const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
   useEffect(() => {
     fetch(`http://localhost:3000/pokemons/${id}/${teamname}`)
       .then(response => {
@@ -8,7 +8,7 @@ const TeamCard = ({ id, teamname, onAddPokemon, team }) => {
       })
       .then(pokemons => {
         pokemons.map(pokemon => {
-          onAddPokemon(pokemon);
+          return onAddPokemon(pokemon);
         });
       });
   }, []);
@@ -20,6 +20,7 @@ const TeamCard = ({ id, teamname, onAddPokemon, team }) => {
         method: 'delete'
       }
     ).then(response => {
+      onDeletePokemon(name);
       return response.json();
     });
   };

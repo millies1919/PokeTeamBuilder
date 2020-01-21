@@ -9,19 +9,19 @@ const PokeCard = props => {
   let pokemon = {};
 
   const sumbitPokemon = () => {
-    var ability = document.getElementById('selectabilities');
-    var item = document.getElementById('item');
-    var hp = document.getElementById('hpev');
-    var atk = document.getElementById('atkev');
-    var def = document.getElementById('defev');
-    var spa = document.getElementById('spaev');
-    var spd = document.getElementById('spdev');
-    var spe = document.getElementById('speev');
-    var nature = document.getElementById('selectednatures');
-    var move1 = document.getElementById('move1');
-    var move2 = document.getElementById('move2');
-    var move3 = document.getElementById('move3');
-    var move4 = document.getElementById('move4');
+    let ability = document.getElementById('selectabilities');
+    let item = document.getElementById('item');
+    let hp = document.getElementById('hpev');
+    let atk = document.getElementById('atkev');
+    let def = document.getElementById('defev');
+    let spa = document.getElementById('spaev');
+    let spd = document.getElementById('spdev');
+    let spe = document.getElementById('speev');
+    let nature = document.getElementById('selectednatures');
+    let move1 = document.getElementById('move1');
+    let move2 = document.getElementById('move2');
+    let move3 = document.getElementById('move3');
+    let move4 = document.getElementById('move4');
 
     pokemon = {
       name: `${data.name}`,
@@ -31,17 +31,18 @@ const PokeCard = props => {
       ability: `${ability.options[ability.selectedIndex].value}`,
       item: `${item.value}`,
       hpev: `${hp.value}`,
-      atkev: `${atk.value}`,
-      defev: `${def.value}`,
-      spaev: `${spa.value}`,
-      spdev: `${spd.value}`,
-      speev: `${spe.value}`,
+      attackev: `${atk.value}`,
+      defenseev: `${def.value}`,
+      specialattackev: `${spa.value}`,
+      specialdefenseev: `${spd.value}`,
+      speedev: `${spe.value}`,
       nature: `${nature.options[nature.selectedIndex].value}`,
       move1: `${move1.value}`,
       move2: `${move2.value}`,
       move3: `${move3.value}`,
       move4: `${move4.value}`
     };
+    props.onAddPokemon(pokemon);
 
     if (props.team.length < 6) {
       fetch('http://localhost:3000/newpokemon', {
@@ -57,11 +58,11 @@ const PokeCard = props => {
           ability: pokemon.ability,
           item: pokemon.item,
           hpev: pokemon.hpev,
-          attackev: pokemon.atkev,
-          defenseev: pokemon.defev,
-          specialattackev: pokemon.spaev,
-          specialdefenseev: pokemon.spdev,
-          speedev: pokemon.speev,
+          attackev: pokemon.attackev,
+          defenseev: pokemon.defenseev,
+          specialattackev: pokemon.specialattackev,
+          specialdefenseev: pokemon.specialdefenseev,
+          speedev: pokemon.speedev,
           nature: pokemon.nature,
           move1: pokemon.move1,
           move2: pokemon.move2,
@@ -70,6 +71,18 @@ const PokeCard = props => {
         })
       }).then(response => response.json());
     }
+    ability.value = '';
+    item.value = '';
+    hp.value = '';
+    atk.value = '';
+    def.value = '';
+    spa.value = '';
+    spd.value = '';
+    spe.value = '';
+    move1.value = '';
+    move2.value = '';
+    move3.value = '';
+    move4.value = '';
   };
 
   data = props.data;
@@ -192,7 +205,6 @@ const PokeCard = props => {
             id="submitpokemon"
             className="ui red button"
             onClick={sumbitPokemon}
-            onMouseDown={() => props.onAddPokemon(pokemon)} //sending empty object
           >
             Submit Pokemon
           </button>

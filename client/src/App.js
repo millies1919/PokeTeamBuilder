@@ -24,10 +24,22 @@ class App extends React.Component {
     this.state = initialUserState;
   }
 
+  clearTeam = () => {
+    this.setState({ team: [] });
+  };
+
+  onDeletePokemon = name => {
+    this.setState(state => {
+      const team = state.team.filter(pokemon => pokemon.name !== name);
+      return {
+        team
+      };
+    });
+  };
+
   onAddPokemon = pokemon => {
     this.setState(state => {
       const team = [...state.team, pokemon];
-      console.log(team);
       return {
         team
       };
@@ -84,11 +96,13 @@ class App extends React.Component {
           />
         ) : (
           <TeamBuilder
+            onDeletePokemon={this.onDeletePokemon}
             onAddPokemon={this.onAddPokemon}
             onRouteChange={this.onRouteChange}
             teamname={this.state.teamname}
             id={this.state.user.id}
             team={this.state.team}
+            clearTeam={this.clearTeam}
           />
         )}
       </div>
