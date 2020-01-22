@@ -9,6 +9,9 @@ const PokeCard = props => {
   let pokemon = {};
 
   const sumbitPokemon = () => {
+    //checks to se eif pokemon already exists
+    let index = props.team.findIndex(x => x.name === data.name);
+
     let ability = document.getElementById('selectabilities');
     let item = document.getElementById('item');
     let hp = document.getElementById('hpev');
@@ -22,67 +25,78 @@ const PokeCard = props => {
     let move2 = document.getElementById('move2');
     let move3 = document.getElementById('move3');
     let move4 = document.getElementById('move4');
+    let moves = [move1.value, move2.value, move3.value, move4.value];
+    let evTotal =
+      hp.value + atk.value + def.value + spa.value + spd.value + spe.value;
+    if (index === -1) {
+      if (evTotal < 508) {
+        pokemon = {
+          name: `${data.name}`,
+          sprite: `${data.sprites.front_default}`,
+          type1: `${data.types[0].type.name}`,
+          type2: data.types.length > 1 ? `${data.types[1].type.name}` : null,
+          ability: `${ability.options[ability.selectedIndex].value}`,
+          item: `${item.value}`,
+          hpev: `${hp.value}`,
+          attackev: `${atk.value}`,
+          defenseev: `${def.value}`,
+          specialattackev: `${spa.value}`,
+          specialdefenseev: `${spd.value}`,
+          speedev: `${spe.value}`,
+          nature: `${nature.options[nature.selectedIndex].value}`,
+          move1: `${move1.value}`,
+          move2: `${move2.value}`,
+          move3: `${move3.value}`,
+          move4: `${move4.value}`
+        };
+        props.onAddPokemon(pokemon);
 
-    pokemon = {
-      name: `${data.name}`,
-      sprite: `${data.sprites.front_default}`,
-      type1: `${data.types[0].type.name}`,
-      type2: data.types.length > 1 ? `${data.types[1].type.name}` : null,
-      ability: `${ability.options[ability.selectedIndex].value}`,
-      item: `${item.value}`,
-      hpev: `${hp.value}`,
-      attackev: `${atk.value}`,
-      defenseev: `${def.value}`,
-      specialattackev: `${spa.value}`,
-      specialdefenseev: `${spd.value}`,
-      speedev: `${spe.value}`,
-      nature: `${nature.options[nature.selectedIndex].value}`,
-      move1: `${move1.value}`,
-      move2: `${move2.value}`,
-      move3: `${move3.value}`,
-      move4: `${move4.value}`
-    };
-    props.onAddPokemon(pokemon);
-
-    if (props.team.length < 6) {
-      fetch('http://localhost:3000/newpokemon', {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: props.id,
-          teamname: props.teamname,
-          name: pokemon.name,
-          sprite: pokemon.sprite,
-          type1: pokemon.type1,
-          type2: pokemon.type2,
-          ability: pokemon.ability,
-          item: pokemon.item,
-          hpev: pokemon.hpev,
-          attackev: pokemon.attackev,
-          defenseev: pokemon.defenseev,
-          specialattackev: pokemon.specialattackev,
-          specialdefenseev: pokemon.specialdefenseev,
-          speedev: pokemon.speedev,
-          nature: pokemon.nature,
-          move1: pokemon.move1,
-          move2: pokemon.move2,
-          move3: pokemon.move3,
-          move4: pokemon.move4
-        })
-      }).then(response => response.json());
+        if (props.team.length < 6) {
+          fetch('http://localhost:3000/newpokemon', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: props.id,
+              teamname: props.teamname,
+              name: pokemon.name,
+              sprite: pokemon.sprite,
+              type1: pokemon.type1,
+              type2: pokemon.type2,
+              ability: pokemon.ability,
+              item: pokemon.item,
+              hpev: pokemon.hpev,
+              attackev: pokemon.attackev,
+              defenseev: pokemon.defenseev,
+              specialattackev: pokemon.specialattackev,
+              specialdefenseev: pokemon.specialdefenseev,
+              speedev: pokemon.speedev,
+              nature: pokemon.nature,
+              move1: pokemon.move1,
+              move2: pokemon.move2,
+              move3: pokemon.move3,
+              move4: pokemon.move4
+            })
+          }).then(response => response.json());
+        }
+        ability.value = '';
+        item.value = '';
+        hp.value = '';
+        atk.value = '';
+        def.value = '';
+        spa.value = '';
+        spd.value = '';
+        spe.value = '';
+        move1.value = '';
+        move2.value = '';
+        move3.value = '';
+        move4.value = '';
+      } else {
+        alert('You cannot have more than 508 EVs on a pokemon');
+        return;
+      }
+    } else {
+      alert('You cannot have more than one of the same pokemon on a team');
     }
-    ability.value = '';
-    item.value = '';
-    hp.value = '';
-    atk.value = '';
-    def.value = '';
-    spa.value = '';
-    spd.value = '';
-    spe.value = '';
-    move1.value = '';
-    move2.value = '';
-    move3.value = '';
-    move4.value = '';
   };
 
   data = props.data;
@@ -191,11 +205,14 @@ const PokeCard = props => {
                   <input
                     id={value.id}
                     type="text"
-                    onBlur={e =>
-                      possibleMoves.includes(e.target.value)
+                    onBlur={e => {
+                      let newMoves = possibleMoves.map(move =>
+                        move.replace('-', ' ')
+                      );
+                      newMoves.includes(e.target.value.toLowerCase())
                         ? setMoveHide('hidden')
-                        : setMoveHide('nothidden')
-                    }
+                        : setMoveHide('nothidden');
+                    }}
                   />
                 </label>
               );
