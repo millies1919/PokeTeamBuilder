@@ -27,19 +27,19 @@ export const natureArr = [
 ];
 
 export const evArr = [
-  { id: 'hpev', text: 'HP:' },
-  { id: 'atkev', text: 'ATK:' },
-  { id: 'spaev', text: 'SPA:' },
-  { id: 'defev', text: 'DEF:' },
-  { id: 'spdev', text: 'SPD:' },
-  { id: 'speev', text: 'SPE:' }
+  { id: 'hpev', text: 'HP' },
+  { id: 'atkev', text: 'ATK' },
+  { id: 'spaev', text: 'SPA' },
+  { id: 'defev', text: 'DEF' },
+  { id: 'spdev', text: 'SPD' },
+  { id: 'speev', text: 'SPE' }
 ];
 
 export const moveArr = [
-  { id: 'move1', text: 'Move 1:' },
-  { id: 'move2', text: 'Move 2:' },
-  { id: 'move3', text: 'Move 3:' },
-  { id: 'move4', text: 'Move 4:' }
+  { id: 'move1', text: 'Move 1' },
+  { id: 'move2', text: 'Move 2' },
+  { id: 'move3', text: 'Move 3' },
+  { id: 'move4', text: 'Move 4' }
 ];
 
 export const pokemon = {

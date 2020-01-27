@@ -118,42 +118,61 @@ const PokeCard = props => {
             />
             <p id="name">{data.name}</p>
           </div>
-          <div id="typecontainer">
-            <label htmlFor="types">
-              Type:
-              {data.types.map((value, index) => {
-                return (
-                  <span
-                    id={value.type.name}
-                    key={index}
-                    value={value.type.name}
-                  >
-                    {value.type.name}
-                  </span>
-                );
-              })}
-            </label>
-          </div>
-          <div id="abilityconatiner">
-            <label htmlFor="selectabilities">
-              Ability:
-              <select id="selectabilities">
-                {data.abilities.map((value, index) => {
+          <div id="flex2">
+            <div id="typecontainer">
+              <label htmlFor="types">
+                Type
+                {data.types.map((value, index) => {
                   return (
-                    <option key={index} value={value.ability.names}>
-                      {value.ability.name}
-                    </option>
+                    <span
+                      id={value.type.name}
+                      key={index}
+                      value={value.type.name}
+                    >
+                      {value.type.name}
+                    </span>
                   );
                 })}
-              </select>
-            </label>
-          </div>
-          <div id="itemcontainer">
-            <label htmlFor="item">
-              {' '}
-              Item:
-              <input type="text" id="item" />
-            </label>
+              </label>
+            </div>
+            <div id="abilitycontainer">
+              <label htmlFor="selectabilities">
+                Ability
+                <br />
+                <select id="selectabilities">
+                  {data.abilities.map((value, index) => {
+                    return (
+                      <option key={index} value={value.ability.names}>
+                        {value.ability.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            </div>
+            <div id="naturecontainer">
+              <label htmlFor="selectednatures">
+                Nature
+                <br />
+                <select id="selectednatures">
+                  {natureArr.map((value, index) => {
+                    return (
+                      <option key={index} value={value}>
+                        {value}
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            </div>
+            <div id="itemcontainer">
+              <label htmlFor="item">
+                {' '}
+                Item
+                <br />
+                <input type="text" id="item" />
+              </label>
+            </div>
           </div>
           <div id="evcontainer">
             EVs
@@ -163,38 +182,26 @@ const PokeCard = props => {
             </p>
             {evArr.map(value => {
               return (
-                <label htmlFor={value.id} id="evLabel" key={value.id}>
-                  {value.text}
-                  <input
-                    id={value.id}
-                    type="number"
-                    max="252"
-                    onBlur={e => {
-                      e.target.value > 252
-                        ? setEvHide('nothidden')
-                        : setEvHide('hidden');
-                    }}
-                  />
-                </label>
+                <div id="evdiv">
+                  <label htmlFor={value.id} id="evLabel" key={value.id}>
+                    {value.text}
+                    <input
+                      id="evs"
+                      type="number"
+                      max="252"
+                      onBlur={e => {
+                        e.target.value > 252
+                          ? setEvHide('nothidden')
+                          : setEvHide('hidden');
+                      }}
+                    />
+                  </label>
+                </div>
               );
             })}
           </div>
-          <div id="naturecontainer">
-            <label htmlFor="selectednatures">
-              Nature:
-              <select id="selectednatures">
-                {natureArr.map((value, index) => {
-                  return (
-                    <option key={index} value={value}>
-                      {value}
-                    </option>
-                  );
-                })}
-              </select>
-            </label>
-          </div>
           <div id="movecontainer">
-            Moves:
+            Moves
             <p id="moveError" className={moveHide}>
               One or more invalid moves
             </p>
@@ -203,7 +210,7 @@ const PokeCard = props => {
                 <label htmlFor={value.id} id="moveLabel" key={value.id}>
                   {value.text}
                   <input
-                    id={value.id}
+                    id="moves"
                     type="text"
                     onBlur={e => {
                       let newMoves = possibleMoves.map(move =>

@@ -1,8 +1,83 @@
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .nothidden {
-    visibility: visible;
-    color: red;
+  visibility: visible;
+  color: red;
+}
+
+#entercard {
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+  margin-top: 10px;
+}
+
+#spritecontainer {
+  width: 40%;
+  text-align: center;
+}
+
+#spriteimg {
+  width: 90%;
+  height: 90%;
+}
+
+#name {
+  font-size: 15px;
+}
+
+#flex2 {
+  width: 50%;
+}
+
+#typecontainer {
+  margin-bottom: 10%;
+}
+
+#electric {
+  background-color: #f0f031;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#abilitycontainer {
+  margin-bottom: 10%;
+}
+
+#naturecontainer {
+  margin-bottom: 10%;
+}
+
+#evcontainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 60%;
+}
+
+#evdiv {
+  display: inline-block;
+}
+
+#evs {
+  align-self: right;
+}
+#evError {
+}
+#evs {
+}
+#naturecontainer {
+}
+#selectednatures {
+}
+#movecontainer {
+}
+#moveError {
+}
+#moves {
 }
