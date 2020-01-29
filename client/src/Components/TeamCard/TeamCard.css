@@ -1,0 +1,208 @@
+#pokecard {
+  width: 80%;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5%;
+}
+
+#spritecontainer {
+  width: 40%;
+  text-align: center;
+}
+
+#spriteimg {
+  width: 80%;
+  height: 80%;
+}
+
+#name {
+  font-size: 15px;
+}
+
+#flex2 {
+  width: 50%;
+}
+
+#typecontainer {
+  margin-bottom: 10%;
+}
+
+#electric {
+  background-color: #f0f031;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#poison {
+  background-color: #be52da;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#ground {
+  background-color: #dbc044;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#rock {
+  background-color: #7c7622;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#fairy {
+  background-color: #e73cd0;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#water {
+  background-color: #2f8dda;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#grass {
+  background-color: #31f031;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#fire {
+  background-color: #f0b331;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#dark {
+  background-color: #61615c;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#psychic {
+  background-color: #ba73cf;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#ghost {
+  background-color: #a257ac;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#normal {
+  background-color: #ffffff;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#flying {
+  background-color: #97d6fa;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#bug {
+  background-color: #95d146;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#steel {
+  background-color: #bdbdbd;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#dragon {
+  background-color: #4e78d3;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#ice {
+  background-color: #5dbcd4;
+  border: 1px black solid;
+  border-radius: 10% / 50%;
+  padding: 2px;
+  margin-left: 5px;
+}
+
+#abilitycontainer {
+  margin-bottom: 10%;
+}
+
+#naturecontainer {
+  margin-bottom: 10%;
+}
+
+#evcontainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 60%;
+}
+
+#evdiv {
+  display: inline-block;
+  text-align: center;
+}
+
+#evs {
+  float: right;
+  clear: both;
+}
+
+#movecontainer {
+  width: 70%;
+  padding-left: 5%;
+}
+
+#movediv {
+  display: inline-block;
+}
+
+#moves {
+  float: right;
+  clear: both;
+}
+
+#deletebutton {
+  height: 40%;
+}

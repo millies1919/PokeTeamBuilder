@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import pokeapi from '../../apis/api.js';
 import PokeCard from '../PokeCard/PokeCard';
+import './Searchbar.css';
 
 const SearchBar = props => {
   const [input, setInput] = useState('');

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './TeamCard.css';
 
 const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
   useEffect(() => {
@@ -29,67 +30,69 @@ const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
     if (team !== undefined) {
       return team.map(pokemon => {
         return (
-          <div className="item" key={pokemon.index}>
-            <div className="content">
-              <div className="name">{pokemon.name}</div>
-              <div className="type1">{pokemon.type1}</div>
-              {pokemon.type2 !== null ? (
-                <div className="type2">{pokemon.type2}</div>
-              ) : (
-                <div></div>
-              )}
-              <img
-                className="sprite"
-                src={pokemon.sprite}
-                alt="Pokemon sprite"
-              />
-              <div className="ability">{pokemon.ability}</div>
-              <div className="item">{pokemon.item}</div>
-              <div className="evs">
-                Hp: {pokemon.hpev}
-                Attack: {pokemon.attackev}
-                Defense: {pokemon.defenseev}
-                Special Attack: {pokemon.specialattackev}
-                Special Defense: {pokemon.specialdefenseev}
-                Speed: {pokemon.speedev}
+          <div id="teamwrapper">
+            <div id="pokecard">
+              <div id="spritecontainer">
+                <img id="spriteimg" src={pokemon.sprite} alt="Pokemon sprite" />
+                <p id="name">{pokemon.name}</p>
               </div>
-              <div className="nature">{pokemon.nature}</div>
-              <div className="ui card">
-                <div className="content">
-                  <div className="header">Moves</div>
+              <div id="flex2">
+                <div id="typecontainer">
+                  <label htmlFor="types">
+                    Type
+                    <span id={pokemon.type1}>{pokemon.type1}</span>
+                    {pokemon.type2 !== null ? (
+                      <span className="type2" id={pokemon.type2}>
+                        {pokemon.type2}
+                      </span>
+                    ) : (
+                      <div></div>
+                    )}
+                  </label>
                 </div>
-                <div className="content">
-                  <div className="ui small feed">
-                    <div className="event">
-                      <div className="content">
-                        <div className="summary">Move 1: {pokemon.move1}</div>
-                      </div>
-                    </div>
-                    <div className="event">
-                      <div className="content">
-                        <div className="summary">Move 2: {pokemon.move2}</div>
-                      </div>
-                    </div>
-                    <div className="event">
-                      <div className="content">
-                        <div className="summary">Move 3: {pokemon.move3}</div>
-                      </div>
-                    </div>
-                    <div className="event">
-                      <div className="content">
-                        <div className="summary">Move 4: {pokemon.move4}</div>
-                      </div>
-                    </div>
-                  </div>
+                <div id="abilitycontainer">
+                  Ability
+                  <br />
+                  {pokemon.ability}
+                </div>
+                <div id="naturecontainer">
+                  Nature
+                  <br />
+                  {pokemon.nature}
+                </div>
+                <div id="itemcontainer">
+                  Item
+                  <br />
+                  {pokemon.item}
                 </div>
               </div>
+              <div id="evcontainer">
+                EVs
+                <div id="evdiv">
+                  Hp: {pokemon.hpev}
+                  Attack: {pokemon.attackev}
+                  Defense: {pokemon.defenseev}
+                  Special Attack: {pokemon.specialattackev}
+                  Special Defense: {pokemon.specialdefenseev}
+                  Speed: {pokemon.speedev}
+                </div>
+              </div>
+              <div id="movecontainer">
+                Moves
+                {pokemon.move1}
+                {pokemon.move2}
+                {pokemon.move3}
+                {pokemon.move4}
+              </div>
+              <button
+                id="deletebutton"
+                className="ui red button"
+                onClick={() => deletePokemon(teamname, id, pokemon.name)}
+              >
+                Delete
+              </button>
             </div>
-            <button
-              className="ui red button"
-              onClick={() => deletePokemon(teamname, id, pokemon.name)}
-            >
-              Delete
-            </button>
+            <hr />
           </div>
         );
       });
@@ -97,10 +100,10 @@ const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
       return <div>Pokemon</div>;
     }
   };
-
   return (
     <div>
       <h2>Pokemon</h2>
+      <hr />
       <div className="ui celled list">{renderList()}</div>
     </div>
   );

@@ -207,21 +207,23 @@ const PokeCard = props => {
             </p>
             {moveArr.map(value => {
               return (
-                <label htmlFor={value.id} id="moveLabel" key={value.id}>
-                  {value.text}
-                  <input
-                    id="moves"
-                    type="text"
-                    onBlur={e => {
-                      let newMoves = possibleMoves.map(move =>
-                        move.replace('-', ' ')
-                      );
-                      newMoves.includes(e.target.value.toLowerCase())
-                        ? setMoveHide('hidden')
-                        : setMoveHide('nothidden');
-                    }}
-                  />
-                </label>
+                <div id="movediv">
+                  <label htmlFor={value.id} id="moveLabel" key={value.id}>
+                    {value.text}
+                    <input
+                      id="moves"
+                      type="text"
+                      onBlur={e => {
+                        let newMoves = possibleMoves.map(move =>
+                          move.replace('-', ' ')
+                        );
+                        newMoves.includes(e.target.value.toLowerCase())
+                          ? setMoveHide('hidden')
+                          : setMoveHide('nothidden');
+                      }}
+                    />
+                  </label>
+                </div>
               );
             })}
           </div>
