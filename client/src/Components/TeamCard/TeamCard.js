@@ -67,22 +67,39 @@ const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
                 </div>
               </div>
               <div id="evcontainer">
-                EVs
                 <div id="evdiv">
+                  EVs
+                  <br />
+                  <br />
                   Hp: {pokemon.hpev}
+                  <br />
                   Attack: {pokemon.attackev}
+                  <br />
                   Defense: {pokemon.defenseev}
+                  <br />
                   Special Attack: {pokemon.specialattackev}
+                  <br />
                   Special Defense: {pokemon.specialdefenseev}
+                  <br />
                   Speed: {pokemon.speedev}
                 </div>
               </div>
               <div id="movecontainer">
-                Moves
-                {pokemon.move1}
-                {pokemon.move2}
-                {pokemon.move3}
-                {pokemon.move4}
+                <div id="evdiv">
+                  Moves
+                  <br />
+                  <br />
+                  {pokemon.move1}
+                  <br />
+                  <br />
+                  {pokemon.move2}
+                  <br />
+                  <br />
+                  {pokemon.move3}
+                  <br />
+                  <br />
+                  {pokemon.move4}
+                </div>
               </div>
               <button
                 id="deletebutton"
