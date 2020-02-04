@@ -9,7 +9,7 @@ const PokeCard = props => {
   let pokemon = {};
 
   const sumbitPokemon = () => {
-    //checks to se eif pokemon already exists
+    //checks to see if pokemon already exists
     let index = props.team.findIndex(x => x.name === data.name);
 
     let ability = document.getElementById('selectabilities');
@@ -27,9 +27,16 @@ const PokeCard = props => {
     let move4 = document.getElementById('move4');
     let moves = [move1.value, move2.value, move3.value, move4.value];
     let evTotal =
-      hp.value + atk.value + def.value + spa.value + spd.value + spe.value;
+      parseInt(hp.value) +
+      parseInt(atk.value) +
+      parseInt(def.value) +
+      parseInt(spa.value) +
+      parseInt(spd.value) +
+      parseInt(spe.value);
+
+    console.log(evTotal);
     if (index === -1) {
-      if (evTotal < 508) {
+      if (evTotal <= 508) {
         pokemon = {
           name: `${data.name}`,
           sprite: `${data.sprites.front_default}`,
@@ -186,7 +193,7 @@ const PokeCard = props => {
                   <label htmlFor={value.id} id="evLabel" key={value.id}>
                     {value.text}
                     <input
-                      id="evs"
+                      id={value.id}
                       type="number"
                       max="252"
                       onBlur={e => {
@@ -211,7 +218,7 @@ const PokeCard = props => {
                   <label htmlFor={value.id} id="moveLabel" key={value.id}>
                     {value.text}
                     <input
-                      id="moves"
+                      id={value.id}
                       type="text"
                       onBlur={e => {
                         let newMoves = possibleMoves.map(move =>
