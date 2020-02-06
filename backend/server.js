@@ -63,8 +63,8 @@ app.delete('/teamdelete/:teamname/:id', (req, res) => {
   deleteteam.handleDeleteTeam(req, res, db);
 });
 
-app.listen(3000, () => {
-  console.log('app is running');
+app.listen(process.en.PORT || 3000, () => {
+  console.log(`App is running on port ${process.env.PORT}`);
 });
 
 //updatepokemon/:id/:teamname --> PUT = success/fail
