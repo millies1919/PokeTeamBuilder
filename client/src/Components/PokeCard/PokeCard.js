@@ -59,7 +59,7 @@ const PokeCard = props => {
         props.onAddPokemon(pokemon);
 
         if (props.team.length < 6) {
-          fetch('http://localhost:3000/newpokemon', {
+          fetch('https://limitless-woodland-24227.herokuapp.com/newpokemon', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

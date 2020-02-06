@@ -4,7 +4,7 @@ const CreateTeam = ({ onRouteChange, id }) => {
   const [teamname, setTeamname] = useState('');
 
   const teamSubmit = () => {
-    fetch('http://localhost:3000/newteam', {
+    fetch('https://limitless-woodland-24227.herokuapp.com/newteam', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

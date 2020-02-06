@@ -4,7 +4,7 @@ const TeamList = ({ onRouteChange, id, setTeam }) => {
   const [teamList, setTeamList] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/teams/${id}`)
+    fetch(`https://limitless-woodland-24227.herokuapp.com/teams/${id}`)
       .then(response => {
         return response.json();
       })
@@ -14,9 +14,12 @@ const TeamList = ({ onRouteChange, id, setTeam }) => {
   }, []);
 
   const deleteTeam = teamname => {
-    return fetch(`http://localhost:3000/teamdelete/${teamname}/${id}`, {
-      method: 'delete'
-    })
+    return fetch(
+      `https://limitless-woodland-24227.herokuapp.com/teamdelete/${teamname}/${id}`,
+      {
+        method: 'delete'
+      }
+    )
       .then(response => {
         return response.json();
       })

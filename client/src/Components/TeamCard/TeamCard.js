@@ -3,7 +3,9 @@ import './TeamCard.css';
 
 const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
   useEffect(() => {
-    fetch(`http://localhost:3000/pokemons/${id}/${teamname}`)
+    fetch(
+      `https://limitless-woodland-24227.herokuapp.com/pokemons/${id}/${teamname}`
+    )
       .then(response => {
         return response.json();
       })
@@ -16,7 +18,7 @@ const TeamCard = ({ id, teamname, onAddPokemon, team, onDeletePokemon }) => {
 
   const deletePokemon = (teamname, id, name) => {
     return fetch(
-      `http://localhost:3000/deletepokemon/${id}/${teamname}/${name}`,
+      `https://limitless-woodland-24227.herokuapp.com/deletepokemon/${id}/${teamname}/${name}`,
       {
         method: 'delete'
       }

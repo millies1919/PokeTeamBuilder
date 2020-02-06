@@ -19,7 +19,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   };
 
   const onSubmitReigster = () => {
-    fetch('http://localhost:3000/register', {
+    fetch('https://limitless-woodland-24227.herokuapp.com/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
