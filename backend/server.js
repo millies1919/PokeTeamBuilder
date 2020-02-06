@@ -16,10 +16,8 @@ const deleteteam = require('./controllers/deleteteam');
 const db = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: 'postgres',
-    password: 'Niyrtxqo19',
-    database: 'PokemonTeamBuilder'
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
   }
 });
 
